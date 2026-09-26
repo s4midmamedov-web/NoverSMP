@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nover SMP</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛏️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --bg:#0b0c10; --bg2:#111319;
+    --panel:rgba(24,26,34,.55); --panel2:rgba(32,34,44,.65);
+    --border:rgba(255,255,255,.09); --border-soft:rgba(255,255,255,.06);
+    --text:#eceef2; --text-dim:#8d92a3;
+    --emerald:#3ee8a8; --emerald-dim:#1c7a5c;
+    --amber:#f0b64a; --amber-dim:#8a6420;
+    --purple:#b17cff; --purple-dim:#5a3a99;
+    --danger:#ff5c6c; --blood:#e0304a;
+    font-family:'Manrope',system-ui,-apple-system,sans-serif;
+  }
+  html{scroll-behavior:smooth; scroll-padding-top:calc(72px + env(safe-area-inset-top,0px));}
+  html,body{height:100%;}
+  body{
+    background:var(--bg); color:var(--text);
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+    background-image:
+      radial-gradient(circle at 10% -5%, rgba(177,124,255,.10), transparent 40%),
+      radial-gradient(circle at 90% 10%, rgba(62,232,168,.08), transparent 45%),
+      radial-gradient(circle at 50% 100%, rgba(240,182,74,.05), transparent 50%);
+  }
+  @media (prefers-reduced-motion:reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  .pixel{font-family:'Press Start 2P',monospace; letter-spacing:.5px;}
+  .panel{background:var(--panel); border:1px solid var(--border); border-radius:10px; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);}
+  .panel:hover{border-color:rgba(255,255,255,.18);}
+  .glow-emerald{box-shadow:0 0 0 1px var(--emerald-dim), 0 0 30px -10px var(--emerald);}
+  .glow-amber{box-shadow:0 0 0 1px var(--amber-dim), 0 0 30px -10px var(--amber);}
+  .glow-purple{box-shadow:0 0 0 1px var(--purple-dim), 0 0 30px -10px var(--purple);}
+  .glow-blood{box-shadow:0 0 0 1px rgba(224,48,74,.5), 0 0 30px -10px var(--blood);}
+  ::-webkit-scrollbar{width:10px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border); border-radius:4px;}
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{outline:2px solid var(--emerald); outline-offset:2px;}
+  .tab-btn{background:var(--panel); border:1px solid var(--border);}
+  .tab-btn[aria-selected="true"]{background:var(--panel2); color:var(--emerald); border-color:var(--emerald-dim); box-shadow:0 0 20px -10px var(--emerald);}
+  .tab-panel{display:none;} .tab-panel.active{display:block;}
+  .slot{aspect-ratio:1/1; background:var(--panel); border:1px solid var(--border); border-radius:8px;
+    display:flex; align-items:center; justify-content:center; text-align:center; padding:6px;
+    backdrop-filter:blur(10px); transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease;}
+  .slot:hover{transform:translateY(-3px); border-color:var(--emerald-dim); box-shadow:0 0 24px -10px var(--emerald);}
+  .clan-slot-empty{border-style:dashed; background:transparent; color:var(--text-dim);}
+  .divider{height:1px; background:linear-gradient(90deg, transparent, var(--border), transparent);}
+  .hero-title{font-size:clamp(2.1rem, 7vw, 4.2rem); line-height:1.15;}
+  .noise-line{background-image:repeating-linear-gradient(90deg, var(--border-soft) 0 6px, transparent 6px 12px); height:2px;}
+  @keyframes pulseGlow{
+    0%,100%{ box-shadow:0 0 0 1px var(--emerald-dim), 0 0 25px -6px var(--emerald), 0 0 55px -20px var(--purple); }
+    50%{ box-shadow:0 0 0 1px var(--emerald), 0 0 45px -4px var(--emerald), 0 0 80px -14px var(--purple); }
+  }
+  .cta-pulse{animation:pulseGlow 2.2s ease-in-out infinite;}
+  .blood-dot{width:9px; height:9px; border-radius:50%; background:var(--blood); box-shadow:0 0 10px var(--blood); display:inline-block;}
+</style>
+</head>
+<body class="min-h-full">
+
+<nav class="sticky top-0 z-40 backdrop-blur" style="background:rgba(11,12,16,.75); border-bottom:1px solid var(--border-soft); padding-top:env(safe-area-inset-top,0px);">
+  <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+    <span class="pixel text-xs sm:text-sm" style="color:var(--emerald);">NOVER<span style="color:var(--amber);">_</span>SMP</span>
+    <div class="hidden md:flex gap-7 text-sm text-[--text-dim]">
+      <a href="#rules" class="hover:text-[--text] transition-colors">Правила</a>
+      <a href="#clans" class="hover:text-[--text] transition-colors">Кланы</a>
+      <a href="#join" class="hover:text-[--text] transition-colors">Как попасть</a>
+      <a href="#players" class="hover:text-[--text] transition-colors">Игроки</a>
+    </div>
+    <a href="#join" class="text-xs sm:text-sm px-3 py-2 rounded-md panel hover:border-[--emerald-dim] transition-colors" style="border-color:var(--emerald-dim); color:var(--emerald);">Подать заявку</a>
+  </div>
+</nav>
+
+<header class="max-w-6xl mx-auto px-5 pt-16 pb-14 sm:pt-24 sm:pb-20">
+  <p class="pixel text-[10px] sm:text-xs mb-5" style="color:var(--amber);">SURVIVAL MULTIPLAYER</p>
+  <h1 class="pixel hero-title" style="color:var(--text);">NOVER<br><span style="color:var(--emerald);">SMP</span></h1>
+  <p class="mt-6 max-w-xl text-[--text-dim] text-base sm:text-lg">Общий мир, свои законы. Стройте, торгуйте, воюйте — но помните: за каждую кражу и каждый взрыв здесь отвечают по-своему.</p>
+
+  <div class="mt-9 flex flex-wrap gap-3">
+    <span class="px-4 py-2 rounded-md panel text-sm">Версия <b style="color:var(--emerald);">1.21.11</b></span>
+    <span class="px-4 py-2 rounded-md panel text-sm">Открытие сервера · <b>14 сентября</b></span>
+    <span class="px-4 py-2 rounded-md panel text-sm glow-amber">Открытие Энда · <b style="color:var(--amber);">12 октября</b></span>
