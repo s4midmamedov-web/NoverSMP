@@ -59,6 +59,18 @@
   }
   .cta-pulse{animation:pulseGlow 2.2s ease-in-out infinite;}
   .blood-dot{width:9px; height:9px; border-radius:50%; background:var(--blood); box-shadow:0 0 10px var(--blood); display:inline-block;}
+  #toast{
+    position:fixed; left:50%; bottom:28px; transform:translate(-50%, 20px);
+    z-index:100; display:flex; align-items:center; gap:10px;
+    padding:14px 20px; border-radius:10px; background:rgba(18,20,26,.92);
+    border:1px solid var(--emerald-dim); box-shadow:0 0 0 1px rgba(62,232,168,.15), 0 12px 40px -12px rgba(0,0,0,.6), 0 0 30px -8px var(--emerald);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    color:var(--text); font-size:.9rem; font-weight:600;
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+    max-width:calc(100vw - 32px);
+  }
+  #toast.show{opacity:1; transform:translate(-50%, 0); pointer-events:auto;}
+  #toast .toast-icon{color:var(--emerald); font-size:1.1rem; flex:none;}
 </style>
 </head>
 <body class="min-h-full">
@@ -85,3 +97,251 @@
     <span class="px-4 py-2 rounded-md panel text-sm">Версия <b style="color:var(--emerald);">1.21.11</b></span>
     <span class="px-4 py-2 rounded-md panel text-sm">Открытие сервера · <b>14 сентября</b></span>
     <span class="px-4 py-2 rounded-md panel text-sm glow-amber">Открытие Энда · <b style="color:var(--amber);">12 октября</b></span>
+  </div>
+
+  <div class="mt-6 panel glow-purple px-5 py-4 inline-flex flex-col gap-1 max-w-sm">
+    <span class="text-xs text-[--text-dim]">До открытия Энда</span>
+    <span id="countdown" class="pixel text-lg" style="color:var(--amber);">—</span>
+  </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-5"><div class="noise-line"></div></div>
+
+<section id="rules" class="max-w-6xl mx-auto px-5 py-16 sm:py-20">
+  <h2 class="pixel text-lg sm:text-xl mb-2" style="color:var(--text);">Правила</h2>
+  <p class="text-[--text-dim] mb-8 max-w-2xl">Общество и система правосудия Nover SMP — что карает админ, а что решают сами игроки.</p>
+
+  <div role="tablist" class="flex flex-wrap gap-2 mb-6">
+    <button role="tab" aria-selected="true" data-tab="t1" class="tab-btn px-4 py-2 rounded-md text-sm border border-[--border] transition-colors">🛑 Высшие нарушения</button>
+    <button role="tab" aria-selected="false" data-tab="t2" class="tab-btn px-4 py-2 rounded-md text-sm border border-[--border] transition-colors">⚔️ Внутриигровые преступления</button>
+    <button role="tab" aria-selected="false" data-tab="t3" class="tab-btn px-4 py-2 rounded-md text-sm border border-[--border] transition-colors">⚖️ Правосудие</button>
+  </div>
+
+  <div id="t1" class="tab-panel active">
+    <p class="text-sm mb-4" style="color:var(--danger);">Наказание — перманентный админ-бан. Без обсуждений.</p>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="panel p-5">
+        <h3 class="font-semibold mb-2">Читы и X-Ray</h3>
+        <p class="text-sm text-[--text-dim]">Использование любого читерского софта, кликеров, макросов или X-Ray (модов и текстур-паков).</p>
+      </div>
+      <div class="panel p-5">
+        <h3 class="font-semibold mb-2">Гриферство</h3>
+        <p class="text-sm text-[--text-dim]">Умышленная поломка, взрыв, поджог или заливание чужих построек. Ломать чужие дома строго запрещено.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="t2" class="tab-panel">
+    <p class="text-sm mb-4 text-[--text-dim]">За эти нарушения админы не банят — нарушители становятся преступниками внутри самого мира, и с ними разбираются игроки.</p>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="panel p-5">
+        <h3 class="font-semibold mb-2">Воровство</h3>
+        <p class="text-sm text-[--text-dim]">Кража любых ресурсов из чужих домов или сундуков.</p>
+      </div>
+      <div class="panel p-5">
+        <h3 class="font-semibold mb-2">Токсичный таргет</h3>
+        <p class="text-sm text-[--text-dim]">Намеренное, постоянное преследование одного и того же игрока с целью не давать ему спокойно играть и развиваться.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="t3" class="tab-panel">
+    <div class="space-y-3">
+      <div class="panel p-5">
+        <h3 class="font-semibold mb-1">🤝 Прощение владельца</h3>
+        <p class="text-sm text-[--text-dim]">Если пострадавший узнал о ситуации и отреагировал спокойно — «Да ладно, ничего страшного» — наказания нет, инцидент исчерпан.</p>
+      </div>
+      <div class="panel p-5">
+        <h3 class="font-semibold mb-1">📢 Заявление</h3>
+        <p class="text-sm text-[--text-dim]">Если пострадавший против кражи или таргета — он сообщает об этом серверу. О преступнике распространяется вся информация: ник, координаты базы и прочее.</p>
+      </div>
+      <div class="panel p-5">
+        <h3 class="font-semibold mb-1">↩️ Первое преступление</h3>
+        <p class="text-sm text-[--text-dim]">Преступник обязан полностью вернуть украденные ресурсы. Если отказывается — пострадавший вправе убить вора, чтобы забрать своё.</p>
+      </div>
+      <div class="panel p-5 glow-amber">
+        <h3 class="font-semibold mb-1" style="color:var(--amber);">💀 Повторное преступление (рецидив)</h3>
+        <p class="text-sm text-[--text-dim] mb-2">При втором преступлении — или повторном отказе вернуть вещи:</p>
+        <ul class="text-sm text-[--text-dim] space-y-1 list-disc list-inside">
+          <li>Игрок объявляется <b style="color:var(--text);">Врагом Сервера</b>.</li>
+          <li>Обязанность всего сервера — выслеживать и убивать его при каждой встрече.</li>
+          <li>Ресурсы принудительно изымаются, личные вещи и броня уничтожаются при спавне.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-6xl mx-auto px-5"><div class="noise-line"></div></div>
+
+<section id="clans" class="max-w-6xl mx-auto px-5 py-16 sm:py-20">
+  <h2 class="pixel text-lg sm:text-xl mb-2">🛡️ Клановая система</h2>
+  <p class="text-[--text-dim] mb-8 max-w-2xl">На сервере ограничение — максимум 3 клана. Свободные слоты открыты для заявок.</p>
+
+  <div class="grid sm:grid-cols-3 gap-4 mb-10">
+    <div class="panel p-6 glow-blood">
+      <p class="text-xs text-[--text-dim] mb-2 flex items-center gap-2"><span class="blood-dot"></span>Слот 1 · занят</p>
+      <p class="text-xl font-bold" style="color:var(--blood);">blood</p>
+      <p class="text-sm text-[--text-dim] mt-1">Лидер: <span style="color:var(--text);">sederd</span></p>
+    </div>
+    <div class="panel clan-slot-empty p-6 flex flex-col justify-center">
+      <p class="text-xs mb-2">Слот 2</p>
+      <p class="text-lg">Свободный слот</p>
+    </div>
+    <div class="panel clan-slot-empty p-6 flex flex-col justify-center">
+      <p class="text-xs mb-2">Слот 3</p>
+      <p class="text-lg">Свободный слот</p>
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-4">
+    <div class="panel p-5">
+      <h3 class="font-semibold mb-2">⚔️ Кровная месть клана</h3>
+      <p class="text-sm text-[--text-dim]">Если игрок украл вещи из сундуков вашего клана — весь клан вправе таргейтить обидчика. Это идёт как обязательство клана по защите своего имущества.</p>
+    </div>
+    <div class="panel p-5">
+      <h3 class="font-semibold mb-2">🐀 Запрет на инсайд и предательство</h3>
+      <p class="text-sm text-[--text-dim]">Соклановец не может втихую обворовать своих или слить координаты базы врагам. Хочешь воевать против клана или обокрасть его — сначала официально выйди из него. Воровство всё равно карается розыском, гриферство — вечным баном.</p>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-6xl mx-auto px-5"><div class="noise-line"></div></div>
+
+<section id="join" class="max-w-6xl mx-auto px-5 py-16 sm:py-20">
+  <h2 class="pixel text-lg sm:text-xl mb-2">📝 Как попасть на сервер</h2>
+  <p class="text-[--text-dim] mb-8 max-w-2xl">Заполните анкету из 5 вопросов и отправьте её через нашего Telegram-бота.</p>
+
+  <div class="panel p-6">
+    <ol class="space-y-3 text-sm mb-8 list-decimal list-inside text-[--text-dim]">
+      <li>Ваш ник в Minecraft.</li>
+      <li>Ваш возраст.</li>
+      <li>Что планируете делать на сервере? (строить базы, развивать экономику, устраивать ПВП и т.д.)</li>
+      <li>Сколько времени готовы выделять игре в неделю/день?</li>
+      <li>Был ли у вас опыт игры на подобных SMP-серверах?</li>
+    </ol>
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+      <a href="https://t.me" target="_blank" rel="noopener noreferrer" id="tgBtn" onclick="openTelegramBot(event)"
+         class="cta-pulse px-8 py-4 rounded-lg text-base font-bold text-center transition-transform hover:-translate-y-0.5"
+         style="background:linear-gradient(135deg, var(--emerald), var(--purple)); color:#0b0c10;">
+        Подать анкету в Telegram
+      </a>
+      <button type="button" id="copyBtn" onclick="copyApplicationForm()" class="px-5 py-3 rounded-md text-sm font-semibold transition-colors" style="background:var(--panel2); color:var(--text); border:1px solid var(--border);">Скопировать текст анкеты</button>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-6xl mx-auto px-5"><div class="noise-line"></div></div>
+
+<section id="players" class="max-w-6xl mx-auto px-5 py-16 sm:py-20">
+  <h2 class="pixel text-lg sm:text-xl mb-2">Белый список</h2>
+  <p class="text-[--text-dim] mb-8 max-w-2xl">Игроки, допущенные на Nover SMP.</p>
+  <div id="playerGrid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3"></div>
+</section>
+
+<footer class="max-w-6xl mx-auto px-5 py-10 text-center text-xs text-[--text-dim]" style="border-top:1px solid var(--border-soft);">
+  Nover SMP · версия 1.21.11 · заявки через Telegram-бота
+</footer>
+
+<div id="toast" role="status" aria-live="polite"><span class="toast-icon">✓</span><span id="toastMsg"></span></div>
+
+<script>
+  // Toast notification
+  function showToast(message){
+    var toast = document.getElementById('toast');
+    var msg = document.getElementById('toastMsg');
+    if(!toast || !msg) return;
+    msg.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(function(){ toast.classList.remove('show'); }, 2600);
+  }
+
+  // Copy application template to clipboard
+  function copyApplicationForm(){
+    var text = "1. Ваш ник в Minecraft: \n2. Ваш возраст: \n3. Что планируете делать на сервере: \n4. Сколько времени готовы выделять игре в неделю/день: \n5. Был ли у вас опыт игры на подобных SMP-серверах: ";
+
+    function legacyCopy(str){
+      var ta = document.createElement('textarea');
+      ta.value = str;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.left = '-1000px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, str.length);
+      var ok = false;
+      try{ ok = document.execCommand('copy'); }catch(e){ ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    var hasModernClipboard = !!(navigator.clipboard && window.isSecureContext);
+
+    if(hasModernClipboard){
+      navigator.clipboard.writeText(text).then(function(){
+        showToast('Анкета скопирована — вставьте её в чат с ботом');
+      }).catch(function(){
+        var ok = legacyCopy(text);
+        showToast(ok ? 'Анкета скопирована — вставьте её в чат с ботом' : 'Не удалось скопировать автоматически, скопируйте текст вручную');
+      });
+    } else {
+      var ok = legacyCopy(text);
+      showToast(ok ? 'Анкета скопирована — вставьте её в чат с ботом' : 'Не удалось скопировать автоматически, скопируйте текст вручную');
+    }
+  }
+
+  // Open Telegram bot (href/target already handle this; this just guarantees a fallback)
+  function openTelegramBot(event){
+    try{
+      var win = window.open('https://t.me', '_blank', 'noopener,noreferrer');
+      if(win){ if(event) event.preventDefault(); }
+    }catch(e){ /* let the default <a> navigation handle it */ }
+  }
+
+  // Tabs
+  (function(){
+    try{
+      document.querySelectorAll('.tab-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          document.querySelectorAll('.tab-btn').forEach(function(b){ b.setAttribute('aria-selected','false'); });
+          document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+          btn.setAttribute('aria-selected','true');
+          document.getElementById(btn.dataset.tab).classList.add('active');
+        });
+      });
+    }catch(e){ console.error('Tabs init failed', e); }
+  })();
+
+  // Countdown to End opening (Oct 12)
+  (function(){
+    try{
+      var el = document.getElementById('countdown');
+      var now = new Date();
+      var year = now.getFullYear();
+      var target = new Date(year, 9, 12);
+      if (target < now) target = new Date(year+1, 9, 12);
+      var diffMs = target - now;
+      var days = Math.ceil(diffMs / 86400000);
+      el.textContent = days <= 0 ? 'Энд открыт' : days + ' дн.';
+    }catch(e){ console.error('Countdown init failed', e); }
+  })();
+
+  // Player grid
+  (function(){
+    try{
+      var players = ["sederd","Quak222","zakychx13","Pepe_1289","yessurei","D0m0yVOLTER","Bromine2013","korqlol228","the_noiseaiden","rifnullsec","treexxy","sp1ce","relaunch","Posydomo1ka_24","qorvex_144","Yosh1da","kenyanf6","Boberenok_rubit","loid_1488","fofkyt","Sirios275","259081","wolfs1678","loser_291","keynaf6"];
+      var grid = document.getElementById('playerGrid');
+      players.forEach(function(name){
+        var div = document.createElement('div');
+        div.className = 'slot';
+        div.innerHTML = '<span class="text-xs sm:text-sm break-all">' + name + '</span>';
+        grid.appendChild(div);
+      });
+    }catch(e){ console.error('Player grid init failed', e); }
+  })();
+</script>
+</body>
+</html>
